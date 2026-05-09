@@ -1,0 +1,9 @@
+streamlit
+pandas
+numpy
+plotly
+ccxt
+pandas_ta
+stable-baselines3[extra]
+torch
+gymnasium

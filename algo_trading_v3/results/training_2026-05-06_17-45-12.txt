@@ -1,0 +1,42 @@
+============================================================
+TRAINING RESULTS - 2026-05-06_17-45-12
+============================================================
+
+=== USTAWIENIA NAGRÓD I KAR ===
+initial_capital: 1000.0
+position_size_pct: 5
+position_size_usdt: None
+max_position_pct: 20
+stop_loss_pct: 2.8
+take_profit_pct: 20.0
+max_drawdown_limit: 15.0
+reward_profit: 1.2
+reward_unrealized: 0.4
+reward_sharpe: 0.8
+reward_holding: 0.05
+penalty_drawdown: 2.5
+penalty_transaction: 0.1
+penalty_holding_time: 0.08
+penalty_large_position: 1.2
+penalty_inactivity: 0.02
+risk_aversion: 1.9
+win_rate_bonus: True
+use_sortino: False
+leverage: 5
+use_futures: True
+
+=== WYNIKI TRENINGU ===
+Final Equity: $7,763.71
+Total Return: 676.37%
+Total Profit: $0.72
+Max Drawdown: 0.00%
+
+Total Trades: 41
+Winning Trades: 23
+Losing Trades: 18
+Win Rate: 56.1%
+
+Average Profit per Trade: $0.02
+
+Model saved to: models/
+============================================================

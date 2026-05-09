@@ -1,0 +1,22 @@
+{
+  "symbol": "SOL/USDT",
+  "timeframe": "5m",
+  "start_date": "2026-05-01",
+  "end_date": "2026-05-07",
+  "downloaded_at": "2026-05-07T04:42:11.873972",
+  "selected_features": [
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "returns",
+    "log_returns",
+    "buy_volume",
+    "sell_volume",
+    "volume_delta",
+    "cvd"
+  ],
+  "trading_config": {},
+  "total_rows": 1000
+}
