@@ -1,0 +1,129 @@
+============================================================
+  TOP 3 NAJLEPSZE WYNIKI TRENINGU
+  Wygenerowano: 2026-05-09 02:40:41
+============================================================
+
+────────────────────────────────────────────────────────────
+  #1  Score: 154.2220
+────────────────────────────────────────────────────────────
+  Epizod:         1440
+  Trial Optuna:   97
+  Timestamp:      20260507_132146
+
+  WYNIKI:
+    Return:        -3.33%
+    Sharpe:        22.210
+    Max Drawdown:  5.18%
+    Win Rate:      33.3%
+    Total Trades:  30
+    Final Balance: $966.71
+
+  PARAMETRY OPTUNA:
+    reward                              {'profit_multiplier': 1.2009342121076791, 'loss_multiplier': 1.9418917234185502, 'divergence_confirm_bonus': 0.8803221616190425, 'divergence_exit_bonus': 1.3620339372594996, 'trend_confirm_bonus': 0.10126067691711559, 'hold_profit_bonus': 0.25335795567053565, 'hold_loss_penalty': 0.05611306135994352, 'counter_trend_penalty': 0.3782434287974212, 'overtrading_penalty': 0.45604041552632013, 'missed_opportunity_penalty': 0.06977730881891339, 'idle_penalty': 0.021417973850684967, 'stop_loss_penalty': 1.3018369188117014, 'divergence_weight': 0.7780747247985954, 'max_hold_candles': 91, 'min_candles_between_trades': 6, 'stop_loss_pct': 0.05, 'take_profit_pct': 0.03, 'divergence_min_strength': 'medium', 'leverage': 5, 'max_position_pct': 0.02}
+    features                            {'use_ema_9': True, 'use_ema_21': True, 'use_ema_50': False, 'use_ema_cross': True, 'use_rsi_1m': True, 'use_rsi_5m': False, 'use_rsi_15m': True, 'use_macd_hist': False, 'use_macd_cross': False, 'use_hh_hl': True, 'use_ll_lh': True, 'use_swing_dist': True, 'use_volume_ratio': True, 'use_volume_trend': True, 'use_volume_delta': False, 'use_buy_volume': True, 'use_sell_volume': True, 'use_cvd': True, 'use_large_candles': True, 'use_sentiment_score': True, 'use_trend_score_5m': True, 'use_trend_score_15m': True, 'use_tf_alignment': True, 'use_divergence_score': True, 'use_divergence_bullish': True, 'use_divergence_bearish': True, 'use_divergence_strength': True, 'use_position_side': True, 'use_position_pnl': True, 'use_position_duration': True, 'use_candles_since_close': True}
+
+  REWARD CONFIG:
+    profit_multiplier                   1.2009342121076791
+    loss_multiplier                     1.9418917234185502
+    divergence_confirm_bonus            0.8803221616190425
+    divergence_exit_bonus               1.3620339372594996
+    trend_confirm_bonus                 0.10126067691711559
+    hold_profit_bonus                   0.25335795567053565
+    hold_loss_penalty                   0.05611306135994352
+    counter_trend_penalty               0.3782434287974212
+    overtrading_penalty                 0.45604041552632013
+    missed_opportunity_penalty          0.06977730881891339
+    idle_penalty                        0.021417973850684967
+    stop_loss_penalty                   1.3018369188117014
+    divergence_weight                   0.7780747247985954
+    max_hold_candles                    91
+    min_candles_between_trades          6
+    stop_loss_pct                       0.05
+    take_profit_pct                     0.03
+    divergence_min_strength             medium
+    leverage                            5
+    max_position_pct                    0.02
+
+────────────────────────────────────────────────────────────
+  #2  Score: 153.3820
+────────────────────────────────────────────────────────────
+  Epizod:         1365
+  Trial Optuna:   92
+  Timestamp:      20260507_132058
+
+  WYNIKI:
+    Return:        -3.33%
+    Sharpe:        22.070
+    Max Drawdown:  5.18%
+    Win Rate:      33.3%
+    Total Trades:  30
+    Final Balance: $966.71
+
+  PARAMETRY OPTUNA:
+    reward                              {'profit_multiplier': 1.0904886785848857, 'loss_multiplier': 1.8230161089714625, 'divergence_confirm_bonus': 1.0287883664299136, 'divergence_exit_bonus': 1.0818781583125492, 'trend_confirm_bonus': 0.13116169004323006, 'hold_profit_bonus': 0.24766202348132152, 'hold_loss_penalty': 0.05633946728790053, 'counter_trend_penalty': 0.35519373021396594, 'overtrading_penalty': 0.3893155769528963, 'missed_opportunity_penalty': 0.06071591302981154, 'idle_penalty': 0.026420831660340427, 'stop_loss_penalty': 1.515795344398376, 'divergence_weight': 0.8171451866304303, 'max_hold_candles': 92, 'min_candles_between_trades': 6, 'stop_loss_pct': 0.05, 'take_profit_pct': 0.03, 'divergence_min_strength': 'medium', 'leverage': 5, 'max_position_pct': 0.02}
+    features                            {'use_ema_9': True, 'use_ema_21': True, 'use_ema_50': False, 'use_ema_cross': True, 'use_rsi_1m': True, 'use_rsi_5m': False, 'use_rsi_15m': True, 'use_macd_hist': False, 'use_macd_cross': False, 'use_hh_hl': True, 'use_ll_lh': True, 'use_swing_dist': True, 'use_volume_ratio': True, 'use_volume_trend': True, 'use_volume_delta': False, 'use_buy_volume': True, 'use_sell_volume': True, 'use_cvd': True, 'use_large_candles': True, 'use_sentiment_score': True, 'use_trend_score_5m': True, 'use_trend_score_15m': True, 'use_tf_alignment': True, 'use_divergence_score': True, 'use_divergence_bullish': True, 'use_divergence_bearish': True, 'use_divergence_strength': True, 'use_position_side': True, 'use_position_pnl': True, 'use_position_duration': True, 'use_candles_since_close': True}
+
+  REWARD CONFIG:
+    profit_multiplier                   1.0904886785848857
+    loss_multiplier                     1.8230161089714625
+    divergence_confirm_bonus            1.0287883664299136
+    divergence_exit_bonus               1.0818781583125492
+    trend_confirm_bonus                 0.13116169004323006
+    hold_profit_bonus                   0.24766202348132152
+    hold_loss_penalty                   0.05633946728790053
+    counter_trend_penalty               0.35519373021396594
+    overtrading_penalty                 0.3893155769528963
+    missed_opportunity_penalty          0.06071591302981154
+    idle_penalty                        0.026420831660340427
+    stop_loss_penalty                   1.515795344398376
+    divergence_weight                   0.8171451866304303
+    max_hold_candles                    92
+    min_candles_between_trades          6
+    stop_loss_pct                       0.05
+    take_profit_pct                     0.03
+    divergence_min_strength             medium
+    leverage                            5
+    max_position_pct                    0.02
+
+────────────────────────────────────────────────────────────
+  #3  Score: 152.3800
+────────────────────────────────────────────────────────────
+  Epizod:         720
+  Trial Optuna:   49
+  Timestamp:      20260507_122746
+
+  WYNIKI:
+    Return:        -3.33%
+    Sharpe:        21.903
+    Max Drawdown:  5.18%
+    Win Rate:      33.3%
+    Total Trades:  30
+    Final Balance: $966.71
+
+  PARAMETRY OPTUNA:
+    reward                              {'profit_multiplier': 1.9519732472109483, 'loss_multiplier': 3.471100749636076, 'divergence_confirm_bonus': 0.22405956521895387, 'divergence_exit_bonus': 0.9821615088835527, 'trend_confirm_bonus': 0.9262546666169357, 'hold_profit_bonus': 0.2877734524238147, 'hold_loss_penalty': 0.06267633856363365, 'counter_trend_penalty': 0.12839466114625803, 'overtrading_penalty': 0.20995475542937356, 'missed_opportunity_penalty': 0.2141597689545403, 'idle_penalty': 0.02439403032146614, 'stop_loss_penalty': 0.9993623233140886, 'divergence_weight': 0.6579157660776334, 'max_hold_candles': 56, 'min_candles_between_trades': 3, 'stop_loss_pct': 0.05, 'take_profit_pct': 0.03, 'divergence_min_strength': 'medium', 'leverage': 5, 'max_position_pct': 0.02}
+    features                            {'use_ema_9': True, 'use_ema_21': True, 'use_ema_50': False, 'use_ema_cross': True, 'use_rsi_1m': False, 'use_rsi_5m': True, 'use_rsi_15m': True, 'use_macd_hist': False, 'use_macd_cross': False, 'use_hh_hl': True, 'use_ll_lh': True, 'use_swing_dist': True, 'use_volume_ratio': True, 'use_volume_trend': True, 'use_volume_delta': False, 'use_buy_volume': True, 'use_sell_volume': True, 'use_cvd': True, 'use_large_candles': True, 'use_sentiment_score': True, 'use_trend_score_5m': True, 'use_trend_score_15m': True, 'use_tf_alignment': True, 'use_divergence_score': True, 'use_divergence_bullish': True, 'use_divergence_bearish': True, 'use_divergence_strength': True, 'use_position_side': True, 'use_position_pnl': True, 'use_position_duration': True, 'use_candles_since_close': True}
+
+  REWARD CONFIG:
+    profit_multiplier                   1.9519732472109483
+    loss_multiplier                     3.471100749636076
+    divergence_confirm_bonus            0.22405956521895387
+    divergence_exit_bonus               0.9821615088835527
+    trend_confirm_bonus                 0.9262546666169357
+    hold_profit_bonus                   0.2877734524238147
+    hold_loss_penalty                   0.06267633856363365
+    counter_trend_penalty               0.12839466114625803
+    overtrading_penalty                 0.20995475542937356
+    missed_opportunity_penalty          0.2141597689545403
+    idle_penalty                        0.02439403032146614
+    stop_loss_penalty                   0.9993623233140886
+    divergence_weight                   0.6579157660776334
+    max_hold_candles                    56
+    min_candles_between_trades          3
+    stop_loss_pct                       0.05
+    take_profit_pct                     0.03
+    divergence_min_strength             medium
+    leverage                            5
+    max_position_pct                    0.02
+
+============================================================

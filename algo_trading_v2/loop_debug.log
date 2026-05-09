@@ -1,0 +1,291 @@
+===========================================================================
+  TEST LOOP LOG
+===========================================================================
+
+[1] Pobieranie danych z Binance...
+Starting new HTTPS connection (1): api.binance.com:443
+https://api.binance.com:443 "GET /api/v3/klines?symbol=BTCUSDT&interval=5m&limit=300 HTTP/1.1" 200 16065
+Binance: fetched 300 świec BTCUSDT 5m
+    Pobrano:       300 świec
+    Cena pierwsza: $80,086.43
+    Cena ostatnia: $80,263.41
+    Zmiana:        +0.22%
+
+[2] Budowanie sygnałów (trend + dywergencja) per świeca...
+Sygnały: 300 świec | trend_up=144 | div_bull=0 | div_bear=12
+    Unikalne wartości trendu:      5  ← zmienia się per świeca
+    Unikalne wartości dywergencji: 3  ← zmienia się per świeca
+    Trend UP:    144 świec (48%)
+    Trend DOWN:  127 świec (42%)
+    Div BULL:    0 świec (0%)
+    Div BEAR:    12 świec (4%)
+    Div STRONG:  5 świec
+    Div MEDIUM:  7 świec
+
+    Próbka sygnałów (co 15 świec):
+     Idx        Cena    Trend      Div  Siła       Bull   Bear    RSI
+    ────  ──────────  ───────  ───────  ────────  ─────  ─────  ─────
+      55  $79,625.01   -0.500   +0.000  none        nie    nie   63.5
+      70  $79,536.63   -1.000   +0.000  none        nie    nie   34.1
+      85  $79,338.37   -1.000   +0.000  none        nie    nie   27.4
+     100  $79,750.07   +1.000   +0.000  none        nie    nie   64.2
+     115  $79,838.93   +0.500   +0.000  none        nie    nie   56.2
+     130  $80,243.48   +1.000   -0.600  strong      nie    TAK   64.6
+     145  $80,295.09   +1.000   +0.000  none        nie    nie   66.3
+     160  $79,787.67   -1.000   +0.000  none        nie    nie   35.3
+     175  $80,196.01   +1.000   +0.000  none        nie    nie   56.0
+     190  $79,994.94   +0.500   +0.000  none        nie    nie   41.6
+     205  $80,021.29   +0.000   +0.000  none        nie    nie   59.6
+     220  $80,242.77   +1.000   +0.000  none        nie    nie   63.9
+     235  $80,115.51   +0.500   +0.000  none        nie    nie   48.3
+
+===========================================================================
+  PARAMETRY NAGRODY I KARY DLA TEJ PĘTLI
+===========================================================================
+
+  ┌─ NAGRODY ────────────────────────────────────────────────────
+  │  profit_multiplier          = 2.5
+  │    → zysk z pozycji × 2.5 = nagroda za zysk
+  │  divergence_confirm_bonus   = 0.8
+  │    → bonus gdy wejście potwierdzone dywergencją (weight=0.7)
+  │    → efektywny bonus = 0.560
+  │  trend_confirm_bonus        = 0.4
+  │    → bonus za wejście zgodne z trendem 15m
+  │  hold_profit_bonus          = 0.15 per świeca
+  │    → nagroda za trzymanie zyskownej pozycji
+  │  divergence_exit_bonus      = 0.6
+  │    → bonus za zamknięcie gdy pojawi się div contra trend
+  │
+  ├─ KARY ───────────────────────────────────────────────────────
+  │  loss_multiplier            = 3.0
+  │    → strata × 3.0 = kara za stratę
+  │  stop_loss_penalty          = 1.2
+  │    → dodatkowa kara przy zamknięciu przez SL
+  │  hold_loss_penalty          = 0.1 per świeca
+  │    → kara za trzymanie stratnej pozycji
+  │  counter_trend_penalty      = 0.3
+  │    → kara za wejście contra trendu 15m
+  │  overtrading_penalty        = 0.4
+  │    → kara za otwarcie < 4 świec po zamknięciu
+  │  missed_opportunity_penalty = 0.1
+  │    → kara za pominięcie silnego sygnału (div+trend)
+  │  idle_penalty               = 0.01 per świeca
+  │    → mała kara za bezczynność gdy są sygnały
+  │
+  └─ PARAMETRY POZYCJI ──────────────────────────────────────────
+     stop_loss_pct              = 2.0%  (stałe)
+     take_profit_pct            = 4.0%  (stałe)
+     max_hold_candles           = 50
+     min_candles_between_trades = 4
+     divergence_min_strength    = medium
+     divergence_weight          = 0.7
+
+===========================================================================
+  PĘTLA KROK PO KROKU (pierwsze 150 kroków)
+===========================================================================
+
+   Krok        Cena    Trend      Div  Siła       Poz    PnL%  Akcja     Nagroda    Balance  Składowe nagrody
+  ─────  ──────────  ───────  ───────  ───────  ─────  ──────  ──────  ─────────  ─────────  ──────────────────────────────
+      0  $79,713.15   +0.500   +0.000  none         —       —  LONG     +0.0000  $  999.00  overtrading_penalty=-0.400  trend_confirm=+0.400
+      1  $79,729.75   +0.500   +0.000  none      long   +0.02  CLOSE    +0.0005  $  998.21  profit=+0.001
+      2  $79,657.17   -0.500   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      3  $79,625.26   -0.500   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      4  $79,567.34   -0.500   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      5  $79,625.01   -0.500   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      6  $79,670.13   +0.000   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      7  $79,655.23   +0.000   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      8  $79,658.49   +0.000   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+      9  $79,639.54   -0.500   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+     10  $79,639.69   -0.500   +0.000  none         —       —  CLOSE    +0.0000  $  998.21  (brak aktywnych składowych)
+     11  $79,605.36   -0.500   +0.000  none         —       —  HOLD     -0.0100  $  998.21  idle_penalty=-0.010
+     12  $79,613.18   -1.000   +0.000  none         —       —  HOLD     -0.0100  $  998.21  idle_penalty=-0.010
+     13  $79,627.64   -1.000   +0.000  none         —       —  HOLD     -0.0100  $  998.21  idle_penalty=-0.010
+     14  $79,691.24   +0.500   +0.000  none         —       —  HOLD     -0.0100  $  998.21  idle_penalty=-0.010
+     15  $79,713.01   +0.500   +0.000  none         —       —  SHORT    +0.0000  $  997.21  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     16  $79,751.94   +0.500   +0.000  none     short   -0.05  SHORT    +0.0000  $  997.21  (brak aktywnych składowych)
+     17  $79,687.21   +0.500   +0.000  none     short   +0.03  LONG     +0.0000  $  997.21  (brak aktywnych składowych)
+     18  $79,675.49   -0.500   +0.000  none     short   +0.05  HOLD     +0.1500  $  997.21  hold_profit=+0.150
+     19  $79,600.01   -0.500   +0.000  none     short   +0.14  HOLD     +0.1500  $  997.21  hold_profit=+0.150
+     20  $79,536.63   -1.000   +0.000  none     short   +0.22  CLOSE    +0.0055  $  998.42  profit=+0.005
+     21  $79,513.62   -1.000   +0.000  none         —       —  LONG     +0.0000  $  997.42  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     22  $79,603.77   -1.000   +0.000  none      long   +0.11  CLOSE    +0.0028  $  997.56  profit=+0.003
+     23  $79,592.97   -1.000   +0.000  none         —       —  LONG     +0.0000  $  996.56  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     24  $79,577.78   -1.000   +0.000  none      long   -0.02  CLOSE    -0.0006  $  995.37  loss=-0.001
+     25  $79,546.80   -1.000   +0.000  none         —       —  LONG     +0.0000  $  994.38  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     26  $79,471.01   -1.000   +0.000  none      long   -0.10  LONG     +0.0000  $  994.38  (brak aktywnych składowych)
+     27  $79,552.12   -1.000   +0.000  none      long   +0.01  CLOSE    +0.0002  $  993.45  profit=+0.000
+     28  $79,535.00   -1.000   +0.000  none         —       —  LONG     +0.0000  $  992.45  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     29  $79,508.79   -1.000   +0.000  none      long   -0.03  HOLD     -0.1000  $  992.45  hold_loss=-0.100
+     30  $79,520.01   -1.000   +0.000  none      long   -0.02  LONG     +0.0000  $  992.45  (brak aktywnych składowych)
+     31  $79,525.76   -1.000   +0.000  none      long   -0.01  LONG     +0.0000  $  992.45  (brak aktywnych składowych)
+     32  $79,429.53   -1.000   +0.000  none      long   -0.13  LONG     +0.0000  $  992.45  (brak aktywnych składowych)
+     33  $79,388.79   -1.000   +0.000  none      long   -0.18  LONG     +0.0000  $  992.45  (brak aktywnych składowych)
+     34  $79,318.26   -1.000   +0.000  none      long   -0.27  HOLD     -0.1000  $  992.45  hold_loss=-0.100
+     35  $79,338.37   -1.000   +0.000  none      long   -0.25  SHORT    +0.0000  $  992.45  (brak aktywnych składowych)
+     36  $79,280.39   -1.000   +0.000  none      long   -0.32  LONG     +0.0000  $  992.45  (brak aktywnych składowych)
+     37  $79,350.32   -1.000   +0.000  none      long   -0.23  LONG     +0.0000  $  992.45  (brak aktywnych składowych)
+     38  $79,488.85   -0.500   +0.000  none      long   -0.06  CLOSE    -0.0017  $  990.89  loss=-0.002
+     39  $79,532.95   -0.500   +0.000  none         —       —  LONG     +0.0000  $  989.89  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     40  $79,580.84   +0.000   +0.000  none      long   +0.06  HOLD     +0.1500  $  989.89  hold_profit=+0.150
+     41  $79,678.71   +0.500   +0.000  none      long   +0.18  HOLD     +0.1500  $  989.89  hold_profit=+0.150
+     42  $79,704.91   +0.500   +0.000  none      long   +0.22  SHORT    +0.0000  $  989.89  (brak aktywnych składowych)
+     43  $79,682.40   +0.500   +0.000  none      long   +0.19  SHORT    +0.0000  $  989.89  (brak aktywnych składowych)
+     44  $79,712.45   +0.500   +0.000  none      long   +0.23  CLOSE    +0.0056  $  991.14  profit=+0.006
+     45  $79,708.79   +0.500   +0.000  none         —       —  HOLD     -0.0100  $  991.14  idle_penalty=-0.010
+     46  $79,724.63   +0.500   +0.000  none         —       —  CLOSE    +0.0000  $  991.14  (brak aktywnych składowych)
+     47  $79,740.24   +1.000   +0.000  none         —       —  SHORT    +0.0000  $  990.15  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     48  $79,739.28   +1.000   +0.000  none     short   +0.00  SHORT    +0.0000  $  990.15  (brak aktywnych składowych)
+     49  $79,756.74   +1.000   +0.000  none     short   -0.02  CLOSE    -0.0006  $  988.95  loss=-0.001
+     50  $79,750.07   +1.000   +0.000  none         —       —  SHORT    +0.0000  $  987.96  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     51  $79,850.00   +1.000   +0.000  none     short   -0.13  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     52  $79,893.69   +1.000   +0.000  none     short   -0.18  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     53  $79,947.66   +1.000   -0.240  medium   short   -0.25  HOLD     -0.1000  $  987.96  hold_loss=-0.100
+     54  $79,950.00   +1.000   -0.240  medium   short   -0.25  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     55  $79,886.01   +1.000   -0.240  medium   short   -0.17  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     56  $79,854.84   +1.000   -0.240  medium   short   -0.13  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     57  $79,983.06   +1.000   -0.240  medium   short   -0.29  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     58  $79,980.31   +1.000   -0.240  medium   short   -0.29  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     59  $79,972.88   +1.000   -0.240  medium   short   -0.28  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     60  $79,992.85   +1.000   +0.000  none     short   -0.30  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     61  $79,908.10   +0.500   +0.000  none     short   -0.20  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     62  $79,910.00   +0.500   +0.000  none     short   -0.20  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     63  $79,868.82   +0.500   +0.000  none     short   -0.15  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     64  $79,863.71   +0.500   +0.000  none     short   -0.14  HOLD     -0.1000  $  987.96  hold_loss=-0.100
+     65  $79,838.93   +0.500   +0.000  none     short   -0.11  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     66  $79,872.13   +0.500   +0.000  none     short   -0.15  HOLD     -0.1000  $  987.96  hold_loss=-0.100
+     67  $79,872.72   +0.500   +0.000  none     short   -0.15  SHORT    +0.0000  $  987.96  (brak aktywnych składowych)
+     68  $80,019.99   +1.000   +0.000  none     short   -0.34  CLOSE    -0.0102  $  983.63  loss=-0.010
+     69  $79,800.71   +0.500   +0.000  none         —       —  HOLD     -0.0100  $  983.63  idle_penalty=-0.010
+     70  $79,818.83   +0.500   +0.000  none         —       —  LONG     +0.0000  $  982.65  overtrading_penalty=-0.400  trend_confirm=+0.400
+     71  $79,868.35   +0.500   +0.000  none      long   +0.06  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     72  $79,886.29   +1.000   +0.000  none      long   +0.08  LONG     +0.0000  $  982.65  (brak aktywnych składowych)
+     73  $79,899.40   +1.000   +0.000  none      long   +0.10  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     74  $79,981.55   +1.000   +0.000  none      long   +0.20  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     75  $80,056.93   +1.000   +0.000  none      long   +0.30  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     76  $80,158.88   +1.000   -0.600  strong    long   +0.43  LONG     +0.0000  $  982.65  (brak aktywnych składowych)
+     77  $80,164.94   +1.000   -0.600  strong    long   +0.43  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     78  $80,207.80   +1.000   -0.600  strong    long   +0.49  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     79  $80,212.56   +1.000   -0.600  strong    long   +0.49  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     80  $80,243.48   +1.000   -0.600  strong    long   +0.53  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     81  $80,217.72   +1.000   +0.000  none      long   +0.50  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     82  $80,227.97   +1.000   +0.000  none      long   +0.51  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     83  $80,216.00   +1.000   +0.000  none      long   +0.50  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     84  $80,274.00   +1.000   +0.000  none      long   +0.57  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     85  $80,300.00   +1.000   +0.000  none      long   +0.60  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     86  $80,262.92   +1.000   +0.000  none      long   +0.56  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     87  $80,218.03   +0.500   +0.000  none      long   +0.50  SHORT    +0.0000  $  982.65  (brak aktywnych składowych)
+     88  $80,141.08   +0.500   +0.000  none      long   +0.40  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     89  $80,228.35   +1.000   +0.000  none      long   +0.51  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     90  $80,254.52   +1.000   +0.000  none      long   +0.55  HOLD     +0.1500  $  982.65  hold_profit=+0.150
+     91  $80,231.22   +1.000   +0.000  none      long   +0.52  CLOSE    +0.0129  $  986.74  profit=+0.013
+     92  $80,234.17   +1.000   +0.000  none         —       —  SHORT    +0.0000  $  985.76  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+     93  $80,192.09   +0.500   +0.000  none     short   +0.05  HOLD     +0.1500  $  985.76  hold_profit=+0.150
+     94  $80,267.99   +1.000   +0.000  none     short   -0.04  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+     95  $80,295.09   +1.000   +0.000  none     short   -0.08  SHORT    +0.0000  $  985.76  (brak aktywnych składowych)
+     96  $80,296.54   +1.000   +0.000  none     short   -0.08  SHORT    +0.0000  $  985.76  (brak aktywnych składowych)
+     97  $80,318.38   +1.000   +0.000  none     short   -0.10  HOLD     -0.1000  $  985.76  hold_loss=-0.100
+     98  $80,256.46   +0.500   +0.000  none     short   -0.03  HOLD     -0.1000  $  985.76  hold_loss=-0.100
+     99  $80,224.55   +0.500   +0.000  none     short   +0.01  HOLD     +0.1500  $  985.76  hold_profit=+0.150
+    100  $80,225.30   +0.500   +0.000  none     short   +0.01  HOLD     +0.1500  $  985.76  hold_profit=+0.150
+    101  $80,086.85   +0.500   +0.000  none     short   +0.18  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    102  $80,116.81   +0.500   +0.000  none     short   +0.15  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    103  $80,025.82   -0.500   +0.000  none     short   +0.26  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    104  $80,063.35   -0.500   +0.000  none     short   +0.21  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    105  $79,907.65   -0.500   +0.000  none     short   +0.41  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    106  $79,692.86   -0.500   +0.000  none     short   +0.67  SHORT    +0.0000  $  985.76  (brak aktywnych składowych)
+    107  $79,760.93   -0.500   +0.000  none     short   +0.59  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    108  $79,737.74   -0.500   +0.000  none     short   +0.62  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    109  $79,612.52   -1.000   +0.000  none     short   +0.77  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    110  $79,787.67   -1.000   +0.000  none     short   +0.56  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    111  $79,706.73   -1.000   +0.000  none     short   +0.66  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    112  $79,595.75   -1.000   +0.000  none     short   +0.80  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    113  $79,623.14   -1.000   +0.000  none     short   +0.76  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    114  $79,583.49   -1.000   +0.000  none     short   +0.81  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    115  $79,647.80   -1.000   +0.000  none     short   +0.73  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    116  $79,834.24   -0.500   +0.000  none     short   +0.50  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    117  $79,859.52   -0.500   +0.000  none     short   +0.47  LONG     +0.0000  $  985.76  (brak aktywnych składowych)
+    118  $79,927.33   -0.500   +0.000  none     short   +0.38  HOLD     +0.1500  $  985.76  hold_profit=+0.150
+    119  $80,368.15   +0.500   +0.000  none     short   -0.17  HOLD     -0.1000  $  985.76  hold_loss=-0.100
+    120  $80,254.49   +0.500   +0.000  none     short   -0.03  SHORT    +0.0000  $  985.76  (brak aktywnych składowych)
+    121  $80,072.76   +0.500   +0.000  none     short   +0.20  CLOSE    +0.0050  $  986.75  profit=+0.005
+    122  $80,131.16   +0.500   +0.000  none         —       —  SHORT    +0.0000  $  985.77  overtrading_penalty=-0.400  counter_trend_penalty=-0.300
+    123  $80,258.46   +1.000   +0.000  none     short   -0.16  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    124  $80,222.49   +1.000   +0.000  none     short   -0.11  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    125  $80,196.01   +1.000   +0.000  none     short   -0.08  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    126  $80,185.91   +1.000   +0.000  none     short   -0.07  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    127  $80,150.97   +1.000   +0.000  none     short   -0.02  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    128  $79,989.23   +0.000   +0.000  none     short   +0.18  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    129  $79,978.17   +0.000   +0.000  none     short   +0.19  SHORT    +0.0000  $  985.77  (brak aktywnych składowych)
+    130  $79,897.49   +0.000   +0.000  none     short   +0.29  HOLD     +0.1500  $  985.77  hold_profit=+0.150
+    131  $79,842.48   -0.500   +0.000  none     short   +0.36  HOLD     +0.1500  $  985.77  hold_profit=+0.150
+    132  $79,702.66   -1.000   +0.000  none     short   +0.53  CLOSE    +0.0134  $  990.05  profit=+0.013
+    133  $79,713.36   -1.000   +0.000  none         —       —  CLOSE    +0.0000  $  990.05  (brak aktywnych składowych)
+    134  $79,871.56   -1.000   +0.000  none         —       —  SHORT    +0.0000  $  989.06  overtrading_penalty=-0.400  trend_confirm=+0.400
+    135  $79,898.96   -0.500   +0.000  none     short   -0.03  HOLD     -0.1000  $  989.06  hold_loss=-0.100
+    136  $79,966.14   -0.500   +0.000  none     short   -0.12  HOLD     -0.1000  $  989.06  hold_loss=-0.100
+    137  $80,069.60   +0.000   +0.000  none     short   -0.25  HOLD     -0.1000  $  989.06  hold_loss=-0.100
+    138  $80,142.13   +0.500   +0.000  none     short   -0.34  SHORT    +0.0000  $  989.06  (brak aktywnych składowych)
+    139  $80,142.14   +1.000   +0.000  none     short   -0.34  SHORT    +0.0000  $  989.06  (brak aktywnych składowych)
+    140  $79,994.94   +0.500   +0.000  none     short   -0.15  SHORT    +0.0000  $  989.06  (brak aktywnych składowych)
+    141  $79,982.90   +0.000   +0.000  none     short   -0.14  SHORT    +0.0000  $  989.06  (brak aktywnych składowych)
+    142  $79,965.76   +0.000   +0.000  none     short   -0.12  SHORT    +0.0000  $  989.06  (brak aktywnych składowych)
+    143  $79,952.20   -0.500   +0.000  none     short   -0.10  SHORT    +0.0000  $  989.06  (brak aktywnych składowych)
+    144  $79,971.46   -0.500   +0.000  none     short   -0.13  CLOSE    -0.0038  $  986.84  loss=-0.004
+    145  $79,950.00   -1.000   +0.000  none         —       —  CLOSE    +0.0000  $  986.84  (brak aktywnych składowych)
+    146  $79,834.96   -1.000   +0.000  none         —       —  CLOSE    +0.0000  $  986.84  (brak aktywnych składowych)
+    147  $79,791.40   -1.000   +0.000  none         —       —  CLOSE    +0.0000  $  986.84  (brak aktywnych składowych)
+    148  $79,790.00   -1.000   +0.000  none         —       —  CLOSE    +0.0000  $  986.84  (brak aktywnych składowych)
+    149  $79,774.69   -1.000   +0.000  none         —       —  CLOSE    +0.0000  $  986.84  (brak aktywnych składowych)
+
+===========================================================================
+  PODSUMOWANIE PĘTLI
+===========================================================================
+  Kroków:              150
+  Zmian trendu:        36  ← trend zmieniał się 36x
+  Zmian dywergencji:   4  ← dywergencja zmieniała się 4x
+  Suma nagród:         +1.4190
+  Balance końcowy:     $986.84
+  Akcje:
+    HOLD:  34
+    LONG:  34
+    SHORT: 53
+    CLOSE: 29
+  Return:              -1.32%
+  Win Rate:            61.5%
+  Total Trades:        13
+  Sharpe:              2.654
+  Max Drawdown:        1.74%
+
+───────────────────────────────────────────────────────────────────────────
+  SZCZEGÓŁY TRANSAKCJI
+───────────────────────────────────────────────────────────────────────────
+  OPEN  LONG   krok=  0  cena=$ 79,713.15  trend= +0.500  div= +0.000  siła=none
+  CLOSE LONG   krok=  1  entry=$ 79,713.15  exit=$ 79,729.75  pnl=  +0.02%  dur=  1 świec  ✅
+  OPEN  SHORT  krok= 15  cena=$ 79,713.01  trend= +0.500  div= +0.000  siła=none
+  CLOSE SHORT  krok= 20  entry=$ 79,713.01  exit=$ 79,536.63  pnl=  +0.22%  dur=  5 świec  ✅
+  OPEN  LONG   krok= 21  cena=$ 79,513.62  trend= -1.000  div= +0.000  siła=none
+  CLOSE LONG   krok= 22  entry=$ 79,513.62  exit=$ 79,603.77  pnl=  +0.11%  dur=  1 świec  ✅
+  OPEN  LONG   krok= 23  cena=$ 79,592.97  trend= -1.000  div= +0.000  siła=none
+  CLOSE LONG   krok= 24  entry=$ 79,592.97  exit=$ 79,577.78  pnl=  -0.02%  dur=  1 świec  ❌
+  OPEN  LONG   krok= 25  cena=$ 79,546.80  trend= -1.000  div= +0.000  siła=none
+  CLOSE LONG   krok= 27  entry=$ 79,546.80  exit=$ 79,552.12  pnl=  +0.01%  dur=  2 świec  ✅
+  OPEN  LONG   krok= 28  cena=$ 79,535.00  trend= -1.000  div= +0.000  siła=none
+  CLOSE LONG   krok= 38  entry=$ 79,535.00  exit=$ 79,488.85  pnl=  -0.06%  dur= 10 świec  ❌
+  OPEN  LONG   krok= 39  cena=$ 79,532.95  trend= -0.500  div= +0.000  siła=none
+  CLOSE LONG   krok= 44  entry=$ 79,532.95  exit=$ 79,712.45  pnl=  +0.23%  dur=  5 świec  ✅
+  OPEN  SHORT  krok= 47  cena=$ 79,740.24  trend= +1.000  div= +0.000  siła=none
+  CLOSE SHORT  krok= 49  entry=$ 79,740.24  exit=$ 79,756.74  pnl=  -0.02%  dur=  2 świec  ❌
+  OPEN  SHORT  krok= 50  cena=$ 79,750.07  trend= +1.000  div= +0.000  siła=none
+  CLOSE SHORT  krok= 68  entry=$ 79,750.07  exit=$ 80,019.99  pnl=  -0.34%  dur= 18 świec  ❌
+  OPEN  LONG   krok= 70  cena=$ 79,818.83  trend= +0.500  div= +0.000  siła=none
+  CLOSE LONG   krok= 91  entry=$ 79,818.83  exit=$ 80,231.22  pnl=  +0.52%  dur= 21 świec  ✅
+  OPEN  SHORT  krok= 92  cena=$ 80,234.17  trend= +1.000  div= +0.000  siła=none
+  CLOSE SHORT  krok=121  entry=$ 80,234.17  exit=$ 80,072.76  pnl=  +0.20%  dur= 29 świec  ✅
+  OPEN  SHORT  krok=122  cena=$ 80,131.16  trend= +0.500  div= +0.000  siła=none
+  CLOSE SHORT  krok=132  entry=$ 80,131.16  exit=$ 79,702.66  pnl=  +0.53%  dur= 10 świec  ✅
+  OPEN  SHORT  krok=134  cena=$ 79,871.56  trend= -1.000  div= +0.000  siła=none
+  CLOSE SHORT  krok=144  entry=$ 79,871.56  exit=$ 79,971.46  pnl=  -0.13%  dur= 10 świec  ❌
+
+===========================================================================
+  Log zapisany do: loop_debug.log
+===========================================================================

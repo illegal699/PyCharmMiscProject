@@ -1,0 +1,18 @@
+2026-05-03 19:48:24  INFO      ============================================================
+2026-05-03 19:48:24  INFO      Watchdog uruchomiony
+2026-05-03 19:48:24  INFO      Pilnuję: volume_monitor.py
+2026-05-03 19:48:24  INFO      Sprawdzam co: 60s
+2026-05-03 19:48:24  INFO      Auto-restart: TAK
+2026-05-03 19:48:24  INFO      ============================================================
+2026-05-03 19:49:26  WARNING   volume_monitor.py NIE działa! (2026-05-03 19:49:26)
+2026-05-03 19:49:26  INFO      Restartuję volume_monitor.py...
+2026-05-03 19:49:26  INFO      Zrestartowano volume_monitor.py
+2026-05-03 19:50:28  WARNING   volume_monitor.py NIE działa! (2026-05-03 19:50:28)
+2026-05-03 19:50:28  INFO      Restartuję volume_monitor.py...
+2026-05-03 19:50:28  INFO      Zrestartowano volume_monitor.py
+2026-05-03 19:51:31  WARNING   volume_monitor.py NIE działa! (2026-05-03 19:51:31)
+2026-05-03 19:51:31  INFO      Restartuję volume_monitor.py...
+2026-05-03 19:51:31  INFO      Zrestartowano volume_monitor.py
+2026-05-03 19:52:34  WARNING   volume_monitor.py NIE działa! (2026-05-03 19:52:34)
+2026-05-03 19:52:34  INFO      Restartuję volume_monitor.py...
+2026-05-03 19:52:34  INFO      Zrestartowano volume_monitor.py
