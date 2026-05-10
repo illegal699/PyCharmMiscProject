@@ -28,9 +28,10 @@ class PPOTrainer:
         reward_engine,
         extra_signals:    dict,
         initial_balance:  float = 1000.0,
-        commission_pct:   float = 0.001,
+        commission_pct:   float = 0.000,
         n_episodes:       int   = 10,
         progress_callback: Optional[Callable] = None,
+        locked_features:  dict = None,
     ):
         self.candles          = candles
         self.fb               = feature_builder
@@ -40,6 +41,7 @@ class PPOTrainer:
         self.commission_pct   = commission_pct
         self.n_episodes       = n_episodes
         self.progress_cb      = progress_callback
+        self.locked_features  = locked_features or {}
 
         self._model  = None
         self._stop   = False
@@ -80,16 +82,26 @@ class PPOTrainer:
         class StopCallback(BaseCallback):
             def __init__(self_):
                 super().__init__()
-                self_.ep_rewards = []
                 self_.ep_count   = 0
+                self_.last_stats = {}
 
             def _on_step(self_) -> bool:
                 return not trainer_ref._stop
 
             def _on_rollout_end(self_):
                 self_.ep_count += 1
+                # Pobierz aktualne statystyki ze środowiska
+                try:
+                    stats = env.get_episode_stats()
+                    self_.last_stats = stats
+                except Exception:
+                    pass
                 if trainer_ref.progress_cb:
-                    trainer_ref.progress_cb(self_.ep_count, trainer_ref.n_episodes)
+                    trainer_ref.progress_cb(
+                        self_.ep_count,
+                        trainer_ref.n_episodes,
+                        self_.last_stats,
+                    )
 
         # PPO model
         # n_steps musi być <= liczby kroków w epizodzie
@@ -112,7 +124,7 @@ class PPOTrainer:
             clip_range    = 0.2,
             ent_coef      = 0.01,
             policy_kwargs = dict(
-                net_arch = [128, 128],
+                net_arch = [256, 256],
             ),
         )
 

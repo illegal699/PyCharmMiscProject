@@ -433,6 +433,33 @@ with tab_meta:
 
         st.markdown('<div class="param-group">🔒 Parametry zablokowane (Optuna ich nie zmienia)</div>',unsafe_allow_html=True)
 
+        # Blokowanie wskaźników technicznych
+        st.markdown('<div style="font-family:Space Mono,monospace;font-size:11px;color:#8b949e;margin-bottom:6px;">Wskaźniki techniczne — Optuna NIE będzie ich zmieniać:</div>',unsafe_allow_html=True)
+        ind_c1, ind_c2, ind_c3 = st.columns(3)
+        with ind_c1:
+            lock_rsi   = st.checkbox("🔒 RSI (1m/5m/15m)", value=False, key="lock_rsi",
+                                      help="Zablokuj RSI — zawsze włączone lub wyłączone")
+            rsi_val    = st.checkbox("Włącz RSI", value=True, key="lock_rsi_val",
+                                      disabled=not lock_rsi)
+        with ind_c2:
+            lock_macd  = st.checkbox("🔒 MACD", value=False, key="lock_macd",
+                                      help="Zablokuj MACD histogram i crossover")
+            macd_val   = st.checkbox("Włącz MACD", value=True, key="lock_macd_val",
+                                      disabled=not lock_macd)
+        with ind_c3:
+            lock_ema   = st.checkbox("🔒 EMA (9/21/50)", value=False, key="lock_ema",
+                                      help="Zablokuj EMA — zawsze włączone lub wyłączone")
+            ema_val    = st.checkbox("Włącz EMA", value=True, key="lock_ema_val",
+                                      disabled=not lock_ema)
+
+        # Zapisz do session_state
+        locked_indicators = {
+            "rsi":  (lock_rsi,  rsi_val),
+            "macd": (lock_macd, macd_val),
+            "ema":  (lock_ema,  ema_val),
+        }
+        st.session_state["_locked_indicators"] = locked_indicators
+
         lock_c1, lock_c2 = st.columns(2)
         with lock_c1:
             lock_sl    = st.checkbox("🔒 Stop Loss %",     value=True,  key="lock_sl",  help="Zablokuj Stop Loss — Optuna użyje Twojej wartości")
@@ -505,7 +532,18 @@ with tab_meta:
         if mp and mp.history:
             for h in mp.history[-15:]:
                 sc_sign="+" if h["score"]>=0 else ""
-                log_lines.append(f"[T{h['trial']:>3}] Score:{sc_sign}{h['score']:.3f}  Ret:{h['return_pct']:+.1f}%  WR:{h['win_rate']:.0f}%  Sharpe:{h['sharpe']:.2f}  DD:{h['drawdown']:.1f}%")
+                bal  = h.get("balance", 0)
+                trd  = h.get("trades", 0)
+                log_lines.append(
+                    f"[T{h['trial']:>3}] "
+                    f"Score:{sc_sign}{h['score']:.3f}  "
+                    f"Ret:{h['return_pct']:+.1f}%  "
+                    f"Bal:${bal:,.0f}  "
+                    f"Trades:{trd:>3}  "
+                    f"WR:{h['win_rate']:.0f}%  "
+                    f"Sharpe:{h['sharpe']:.2f}  "
+                    f"DD:{h['drawdown']:.1f}%"
+                )
         if mp and mp.message:
             log_lines.append(f"\n>>> {mp.message}")
         log_text="\n".join(log_lines) if log_lines else "Oczekiwanie na start meta-agenta..."
@@ -626,6 +664,7 @@ with tab_meta:
             storage              = ma_storage if ma_continue else None,
             load_if_exists       = ma_continue,
             locked_params        = st.session_state.get("_locked_params", {}),
+            locked_indicators    = st.session_state.get("_locked_indicators", {}),
         )
         _hitl_on       = st.session_state.get("_ma_hitl_on", False)
         _hitl_interval = st.session_state.get("_ma_hitl_interval", 10)
