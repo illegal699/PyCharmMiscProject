@@ -27,7 +27,7 @@ class TrainingConfig:
     date_to:       str   = "2024-12-31"
     n_episodes:    int   = 100
     initial_balance: float = 1000.0
-    commission_pct:  float = 0.001
+    commission_pct:  float = 0.0004
     model_name:    str   = "trader_ppo"
     save_path:     str   = "models/"
 

@@ -28,7 +28,7 @@ class PPOTrainer:
         reward_engine,
         extra_signals:    dict,
         initial_balance:  float = 1000.0,
-        commission_pct:   float = 0.000,
+        commission_pct:   float = 0.001,
         n_episodes:       int   = 10,
         progress_callback: Optional[Callable] = None,
         locked_features:  dict = None,
